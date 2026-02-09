@@ -1,6 +1,6 @@
 # Main Menu
 while True:
-    print("\n🍫 Main Menu")
+    print("\n Main Menu")
     print("1. Milk Chocolates")
     print("2. Dark Chocolates")
     print("3. White Chocolates")
@@ -87,7 +87,7 @@ while True:
 
     # Exit
     elif choice == 6:
-        print("Thank you 🍫 Visit again!")
+        print("Thank you Visit again!")
         break
 
     else:
