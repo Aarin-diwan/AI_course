@@ -1,2 +1,11 @@
 import task
 print(task.findSquare(6))
+print(task.findcube(6))
+print(task.area(6))
+print(task.rectangle(6,7))
+print(task.pos(6))
+print(task.neg(6))
+print(task.max(6,9))
+print(task.login("Aarin",1234))
+print(task.atmver(1202))
+print(task.logout())
