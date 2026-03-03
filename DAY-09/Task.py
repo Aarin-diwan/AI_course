@@ -1,45 +1,47 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 
-data = pd.read_csv("coffee_shop_sales.csv")
+# Load CSV file
+data = pd.read_csv("Coffee Shop Sales.csv")
 
-# 1. Add total_amount column 
-data['total_amount'] = data['unit_price'] * data['transaction_qty']
+# Clean column names
+data.columns = data.columns.str.strip().str.lower()
 
-# 2. Find total sales
-total_sales = data['total_amount'].sum()
-print(f"Total Sales: ${total_sales:,.2f}")
+# Create Pivot Table (Total Quantity per Product)
+purchase_df = data.pivot_table(
+    values="transaction_qty",
+    index="product_type",
+    aggfunc="sum"
+)
 
-# 3. Most and least purchased products by quantity
-product_quantity = data.groupby('product_detail')['transaction_qty'].sum().sort_values(ascending=False)
+# Sort from highest to lowest
+purchase_df = purchase_df.sort_values(by="transaction_qty", ascending=False)
 
-most_purchased = product_quantity.head(1)
-least_purchased = product_quantity.tail(1)
+# Top 5 Most Purchased
+top5 = purchase_df.head(5)
 
-print(f"\nMost Purchased Product: {most_purchased.index[0]} - Quantity: {most_purchased.values[0]}")
-print(f"Least Purchased Product: {least_purchased.index[0]} - Quantity: {least_purchased.values[0]}")
+# Top 5 Least Purchased
+bottom5 = purchase_df.tail(5)
 
-print("\n--- Top 5 Most Purchased Products ---")
-print(product_quantity.head(5))
+print("\nTop 5 Most Purchased Products:")
+print(top5)
 
-print("\n--- Top 5 Least Purchased Products ---")
-print(product_quantity.tail(5))
+print("\nTop 5 Least Purchased Products:")
+print(bottom5)
 
-# ----------------- GRAPH -----------------
+# Plot Top 5 Chart
+top5.plot(kind="bar", legend=False)
+plt.title("Top 5 Most Purchased Products")
+plt.xlabel("Product Type")
+plt.ylabel("Total Quantity Sold")
+plt.xticks(rotation=45)
+plt.tight_layout()
+plt.show()
 
-# Get Top 5 and Bottom 5
-top5 = product_quantity.head(5)
-bottom5 = product_quantity.tail(5)
-
-plt.figure(figsize=(10,6))
-
-# Combine both
-combined = pd.concat([top5, bottom5])
-
-combined.plot(kind='bar')
-
-plt.title("Top 5 and Bottom 5 Purchased Products")
-plt.xlabel("Product")
+# Plot Bottom 5 Chart
+bottom5.plot(kind="bar", legend=False)
+plt.title("Top 5 Least Purchased Products")
+plt.xlabel("Product Type")
 plt.ylabel("Total Quantity Sold")
 plt.xticks(rotation=45)
 plt.tight_layout()
